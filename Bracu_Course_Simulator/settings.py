@@ -142,3 +142,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 STATICFILES_DIRS = [
 	os.path.join(BASE_DIR, "static")
 ]
+
+if not DEVELOPMENT:
+	STATIC_ROOT = "/home/usissim.com/public_html/public/static/"
