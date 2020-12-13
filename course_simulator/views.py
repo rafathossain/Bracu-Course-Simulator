@@ -118,6 +118,9 @@ def welcome(request):
 def updateDBBackground(data):
 	chrome_options = Options()
 	chrome_options.add_argument("--headless")
+	if not settings.DEVELOPMENT:
+		chrome_options.add_argument("--remote-debugging-port=9222")
+		chrome_options.add_argument('--no-sandbox')
 
 	if settings.DEVELOPMENT:
 		browser_instance = webdriver.Chrome('./chromedriver_linux', options=chrome_options)
