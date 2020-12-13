@@ -118,7 +118,7 @@ def updateDBBackground(data):
 	chrome_options = Options()
 	chrome_options.add_argument("--headless")
 
-	browser_instance = webdriver.Chrome('./chromedriver', options=chrome_options)
+	browser_instance = webdriver.Chrome('./chromedriver_linux', options=chrome_options)
 
 	time.sleep(1)
 
