@@ -1,0 +1,186 @@
+{% load static %}
+
+{% load get_updated_by %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Bracu Course Simulator | v1.0</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="{% static 'img/bracu.png' %}" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- MDBootstrap Datatables  -->
+    <link href="{% static 'css/addons/datatables.min.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<!-- Start your project here-->
+<div class="mt-5 mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-4 offset-4 col-lg-2 offset-lg-5">
+                <img src="{% static 'img/bracu.png' %}" class="img-fluid" alt="bracu_logo" width="100%">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <h5 class="animated">Bracu Course Simulator</h5>
+                <p class="animated text-muted mb-3">Update Course Database</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-10 offset-1 col-lg-6 offset-lg-3">
+                <h6 style="color: red; border: 2px solid red" class="p-2">
+                    <b>Caution: </b>This credentials are used to updated the course database from usis. No
+                    credentials are stored. It's 100% safe and secure to use usis email and password here to update
+                    database. To ensure transparency, I have made this project open source. <a href=""
+                                                                                               target="_blank">See
+                    the source code here.</a>
+                </h6>
+            </div>
+        </div>
+        <form action="." method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-10 offset-1 col-lg-6 offset-lg-3">
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <div class="alert alert-success mt-3 text-left">
+                                    {{ message }}
+                                </div>
+                            {% endif %}
+                            {% if message.tags == 'error' %}
+                                <div class="alert alert-danger mt-3 text-left">
+                                    {{ message }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <input type="text" value="{{ semester }}" name="semester" hidden required>
+                    <div class="md-form">
+                        <input type="text" name="username" id="username" class="form-control" required>
+                        <label for="username">USIS Username</label>
+                    </div>
+                    <div class="md-form">
+                        <input type="password" name="password" id="password" class="form-control" required>
+                        <label for="password">USIS Password</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center">
+                <a href="{% url 'welcome' %}" class="btn btn-success">Go to Home</a>
+                <button type="submit" class="btn btn-primary">Update Database</button>
+            </div>
+        </form>
+        <div class="row mt-5">
+            <div class="col-12 col-lg-6 offset-lg-3">
+                <h5 class="text-center">Update Queue</h5>
+                <hr>
+                <table id="paginationFullNumbers" class="table" width="100%">
+                    <thead>
+                    <tr>
+                        <th class="th-sm">#</th>
+                        <th class="th-sm text-center">Task Hash</th>
+                        <th class="th-sm text-center">Status</th>
+                        <th class="th-sm text-center">Schedule</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for log in queue_log %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td class="text-center">{% get_updated_by log.task_hash %}</td>
+                            <td><label class="text-primary">Preparing</label></td>
+                            <td class="text-center">
+                                {{ log.run_at|date:"d M Y h:i:s A" }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12 col-lg-6 offset-lg-3">
+                <h5 class="text-center">Database Update Log</h5>
+                <hr>
+                <table id="paginationFullNumbers2" class="table" width="100%">
+                    <thead>
+                    <tr>
+                        <th class="th-sm">#</th>
+                        <th class="th-sm text-center">Updated By</th>
+                        <th class="th-sm text-center">Status</th>
+                        <th class="th-sm text-center">Timestamp</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for log in update_log %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td class="text-center">{% get_updated_by log.updated_by %}</td>
+                            <td class="text-center">
+                                {% if log.update_status == "Processing" %}
+                                    <label class="text-secondary">{{ log.update_status }}</label>
+                                {% elif log.update_status == "Successful" %}
+                                    <label class="text-success">{{ log.update_status }}</label>
+                                {% else %}
+                                    <label class="text-danger">{{ log.update_status }}</label>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {{ log.updated_at|date:"d M Y h:i:s A" }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mt-5 mb-5">
+            <div class="col-12 text-center">
+                <small>Developed by <a href="https://www.facebook.com/rafathossain.xyz" target="_blank">Md. Rafat
+                    Hossain</a></small>
+                <br>
+                <small>VP, Engineering & Product, Soft Tech Innovation Ltd.</small>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End your project here-->
+
+<!-- jQuery -->
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="{% static 'js/popper.min.js' %}" defer></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}" defer></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+<!-- MDBootstrap Datatables  -->
+<script type="text/javascript" src="{% static 'js/addons/datatables.min.js' %}" defer></script>
+<!-- Your custom scripts (optional) -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Pagination full Numbers
+        $('#paginationFullNumbers').DataTable({
+            "pagingType": "full_numbers"
+        });
+        $('#paginationFullNumbers2').DataTable({
+            "pagingType": "full_numbers"
+        });
+    });
+</script>
+
+</body>
+</html>

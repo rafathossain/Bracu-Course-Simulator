@@ -1,0 +1,93 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Bracu Course Simulator | v1.0</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="{% static 'img/bracu.png' %}" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<!-- Start your project here-->
+<div class="mt-5 mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-4 offset-4 col-lg-2 offset-lg-5">
+                <img src="{% static 'img/bracu.png' %}" class="img-fluid" alt="bracu_logo" width="100%">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <h5 class="animated mb-3">Bracu Course Simulator</h5>
+                <p class="animated text-muted">Make a plan for courses with final exam dates, time and lab
+                    timings</p>
+            </div>
+        </div>
+        <form>
+            <div class="row">
+                <div class="col-10 offset-1 col-lg-4 offset-lg-4">
+                    <div class="form-group">
+                        <select class="mdb-select md-form" onchange="setUrl(this.value)">
+                            <option value="" disabled selected>Choose semester to load courses list</option>
+                            {% for semester in semester_list %}
+                                <option value="{{ semester.1 }}_{{ semester.0 }}">{{ semester.0 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center" id="btnBlock" hidden>
+                <a href="" class="btn btn-primary" id="updateBtn">Update Database</a>
+                <a href="" class="btn btn-success" id="courseBtn">Show Course Schedule</a>
+            </div>
+        </form>
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <small>Developed by <a href="https://www.facebook.com/rafathossain.xyz" target="_blank">Md. Rafat
+                    Hossain</a></small>
+                <br>
+                <small>VP, Engineering & Product, Soft Tech Innovation Ltd.</small>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End your project here-->
+
+<!-- jQuery -->
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="{% static 'js/popper.min.js' %}" defer></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}" defer></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+<!-- Your custom scripts (optional) -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.mdb-select').materialSelect();
+    });
+
+    function setUrl(semester) {
+        var semester_sp = semester.split("_");
+        var update_url = '{% url 'update.db' %}' + '?semester=' + semester_sp[0];
+        var course_url = '{% url 'courses' %}' + '?semester=' + semester_sp[0] + "&name=" + semester_sp[1];
+        $("#updateBtn").attr('href', update_url);
+        $("#courseBtn").attr('href', course_url);
+        $("#btnBlock").removeAttr('hidden');
+    }
+</script>
+
+</body>
+</html>

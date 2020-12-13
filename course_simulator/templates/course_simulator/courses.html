@@ -1,0 +1,321 @@
+{% load static %}
+
+{% load parse_date %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Bracu Course Simulator | v1.0</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="{% static 'img/bracu.png' %}" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- MDBootstrap Datatables  -->
+    <link href="{% static 'css/addons/datatables.min.css' %}" rel="stylesheet">
+
+    <style>
+        #course_row:hover {
+            cursor: pointer;
+            background-color: #AED581;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Start your project here-->
+<div class="mt-2 mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-4 offset-4 col-lg-2 offset-lg-5">
+                <div class="col-12 col-lg-10 offset-lg-1">
+                    <img src="{% static 'img/bracu.png' %}" class="img-fluid" alt="bracu_logo" width="100%">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <h5 class="animated">Bracu Course Simulator</h5>
+                <p class="animated text-muted mb-3">Course Details ({{ name }})</p>
+                <div class="col-12 col-lg-6 offset-lg-3">
+                    <h6 class="p-2" style="color: red; border: 2px solid red"><b>Try out the course simulator!</b><br>Select
+                        your
+                        preferred
+                        courses and you will be able to see them at a glance. You need to add the labs as well. This
+                        might be helpful to make an assumption.</h6>
+                </div>
+                {#                <div class="text-center">#}
+                {#                    <label class="badge badge-success btn-rounded p-2">Sunday, Tuesday (ST)</label>#}
+                {#                    <label class="badge badge-danger btn-rounded p-2">Monday, Wednesday (MW)</label>#}
+                {#                    <label class="badge badge-secondary btn-rounded p-2">Thursday, Saturday (RA)</label>#}
+                {#                </div>#}
+                <div class="text-center">
+                    <a href="{% url 'welcome' %}" class="btn btn-success">Go to Homepage</a>
+                    <button class="btn btn-primary" onclick="modalShow()">Show Selected Course</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <hr>
+        <div class="row mt-5">
+            <div class="col-12">
+                <table id="paginationFullNumbers" class="table table-bordered table-striped" width="100%">
+                    <thead>
+                    <tr>
+                        <th class="th-sm">#</th>
+                        <th class="th-sm">Course Code</th>
+                        <th class="th-sm">Section</th>
+                        <th class="th-sm">Total Seat</th>
+                        <th class="th-sm">Faculty</th>
+                        <th class="th-lg">Instructor</th>
+                        <th class="th-lg">Exam Date & Time</th>
+                        <th class="th-sm">Sunday</th>
+                        <th class="th-sm">Monday</th>
+                        <th class="th-sm">Tuesday</th>
+                        <th class="th-sm">Wednesday</th>
+                        <th class="th-sm">Thursday</th>
+                        <th class="th-sm">Friday</th>
+                        <th class="th-sm">Saturday</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for course in courses %}
+                        <tr id="course_row"
+                            onclick="courseClicked('{{ course.course_code|linebreaksbr }}','{{ course.section }}','{{ course.instructor|linebreaksbr }}','{% parse_date course.exam_date %}','{{ course.exam_time }}','{{ course.sunday }}','{{ course.monday }}','{{ course.tuesday }}','{{ course.wednesday }}','{{ course.thursday }}','{{ course.friday }}','{{ course.saturday }}')">
+                            <td><b>{{ forloop.counter }}</b></td>
+                            <td><b>{{ course.course_code }}</b></td>
+                            <td><b>{{ course.section }}</b></td>
+                            <td><b>{{ course.total_seat }}</b></td>
+                            <td><b>{{ course.faculty }}</b></td>
+                            <td><b>{{ course.instructor }}</b></td>
+                            <td><b>{% parse_date course.exam_date %}<br>{{ course.exam_time }}</b></td>
+                            <td><b>{{ course.sunday }}</b></td>
+                            <td><b>{{ course.monday }}</b></td>
+                            <td><b>{{ course.tuesday }}</b></td>
+                            <td><b>{{ course.wednesday }}</b></td>
+                            <td><b>{{ course.thursday }}</b></td>
+                            <td><b>{{ course.friday }}</b></td>
+                            <td><b>{{ course.saturday }}</b></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="container">
+        <div class="row mt-5 mb-5">
+            <div class="col-12 text-center">
+                <small>Developed by <a href="https://www.facebook.com/rafathossain.xyz" target="_blank">Md. Rafat
+                    Hossain</a></small>
+                <br>
+                <small>VP, Engineering & Product, Soft Tech Innovation Ltd.</small>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End your project here-->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fluid" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Course Simulator Plan ({{ name }})</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="sim_table" style="background: white;">
+                    <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Course Code</th>
+                        <th>Section</th>
+                        <th>Instructor</th>
+                        <th>Exam Date & Time</th>
+                        <th>Sunday</th>
+                        <th>Moday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                        <th>Saturday</th>
+                    </tr>
+                    </thead>
+                    <tbody id="course_sim">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a download="Course_plan.jpeg" href="" id="downloadURL" target="_blank">
+                    <button type="button" class="btn btn-success" id="download" onclick="downloaded()">Download!
+                    </button>
+                </a>
+                <img id="loading" src="{% static 'img/loading.gif' %}" width="50px">
+                <button type="button" class="btn btn-success" onclick="convertToImage()" id="generate">Generate Image
+                </button>
+                <button type="button" class="btn btn-danger" onclick="clearAll()">Clear All</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="{% static 'js/popper.min.js' %}" defer></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}" defer></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+<!-- MDBootstrap Datatables  -->
+<script type="text/javascript" src="{% static 'js/addons/datatables.min.js' %}" defer></script>
+<script type="text/javascript"
+        src="https://github.com/niklasvh/html2canvas/releases/download/0.5.0-alpha1/html2canvas.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" defer></script>
+<!-- Your custom scripts (optional) -->
+<script type="text/javascript">
+    var course_array = [];
+
+    $(document).ready(function () {
+        //Pagination full Numbers
+        $('#paginationFullNumbers').DataTable({
+            "pagingType": "full_numbers"
+        });
+    });
+
+    $(document).ready(function () {
+        $("#generate").hide();
+        $("#downloadURL").hide();
+        $("#loading").hide();
+        $('#dtBasicExample').DataTable();
+        $('.dataTables_length').addClass('bs-select');
+    });
+
+    function arrayContains(course_code, section) {
+        for (var i = 0; i < course_array.length; i++) {
+            if (course_array[i][0] === course_code && parseInt(course_array[i][1]) === parseInt(section)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function courseContains(course_code, section) {
+        course_code = course_code.split("(")[0].trim();
+        for (var i = 0; i < course_array.length; i++) {
+            if ((course_array[i][0]).toString().includes(course_code)) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Course already added!'
+                })
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function courseClicked(course_code, section, instructor, exam_date, exam_time, sunday, monday, tuesday, wednesday, thursday, friday, saturday) {
+        if (!arrayContains(course_code, section) && !courseContains(course_code, section)) {
+            course_array.push([course_code, section, instructor, exam_date, exam_time, sunday, monday, tuesday, wednesday, thursday, friday, saturday]);
+            {#updateSession();#}
+            var rows = '<tr><td id="trash" onclick="removeRow(this, \'' + course_code + '\', \'' + section + '\')"><i class="fas fa-trash-alt"></i></td><td><b>' + course_code + '</b></td><td><b>' + section + '</b></td><td><b>' + instructor + '</b></td><td><b>' + exam_date + '<br>' + exam_time + '</b></td><td><b>' + sunday + '</b></td><td><b>' + monday + '</b></td><td><b>' + tuesday + '</b></td><td><b>' + wednesday + '</b></td><td><b>' + thursday + '</b></td><td><b>' + friday + '</b></td><td><b>' + saturday + '</b></td></tr>';
+            $("#course_sim").append(rows);
+            $("#exampleModalCenter").modal('show');
+            $("#generate").show();
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Course already added!'
+            })
+        }
+    }
+
+    function removeRow(elem, course_code, section) {
+        temp_array = [];
+        for (var i = 0; i < course_array.length; i++) {
+            if (!(course_array[i][0] === course_code) && !(parseInt(course_array[i][1]) === parseInt(section))) {
+                temp_array.push(course_array[i]);
+            }
+        }
+        course_array = temp_array;
+        {#updateSession();#}
+        $(elem).closest('tr').remove();
+    }
+
+    function modalShow() {
+        if (course_array.length === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Please add a course first!'
+            })
+        } else {
+            $("#exampleModalCenter").modal('show');
+        }
+    }
+
+    function updateSession() {
+        var token = '{{csrf_token}}';
+        $.ajax({
+            method: 'POST',
+            headers: {"X-CSRFToken": token},
+            url: '{% url 'courses.session' %}',
+            data: {
+                'course_array': course_array.toString()
+            },
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function clearAll() {
+        $("#generate").hide();
+        $("#course_sim").html("");
+        $("#exampleModalCenter").modal('hide');
+        $("#downloadURL").attr("href", "");
+        $("#downloadURL").hide();
+    }
+
+    function downloaded() {
+        $("#downloadURL").hide();
+        $("#generate").show();
+    }
+
+    //convert table to image
+    function convertToImage() {
+        html2canvas(document.getElementById("sim_table"), {
+            onrendered: function (canvas) {
+                var img = canvas.toDataURL("image/png");
+                $("#loading").show();
+                $("#generate").hide();
+                $("#downloadURL").attr("href", img);
+                $("#loading").hide();
+                $("#downloadURL").show();
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
