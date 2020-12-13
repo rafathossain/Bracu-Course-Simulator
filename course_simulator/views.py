@@ -9,6 +9,7 @@ from .models import *
 from background_task import background
 from background_task.models import *
 from django.contrib import messages
+from django.conf import settings
 
 
 def usis_login(browser, email, password):
@@ -118,7 +119,10 @@ def updateDBBackground(data):
 	chrome_options = Options()
 	chrome_options.add_argument("--headless")
 
-	browser_instance = webdriver.Chrome('./chromedriver_linux', options=chrome_options)
+	if settings.DEVELOPMENT:
+		browser_instance = webdriver.Chrome('./chromedriver_linux', options=chrome_options)
+	else:
+		browser_instance = webdriver.Chrome('/home/usissim.com/public_html/chromedriver_linux', options=chrome_options)
 
 	time.sleep(1)
 
