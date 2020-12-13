@@ -253,6 +253,69 @@ def coursesPage(request):
 		return HttpResponseRedirect(reverse('welcome'))
 
 
+def coursesView(request):
+	# Get the data from request
+	search_value = request.GET['search[value]'].strip()
+	startLimit = int(request.GET['start'])
+	endLimit = startLimit + int(request.GET['length'])
+	data_array = []
+
+	# Count the total length
+	totalLength = CourseList.objects.count()
+
+	# if search parameter is passed
+	if search_value != '':
+		# Querying dataset
+		dataList = CourseList.objects.filter(
+			Q(course_code__contains=search_value) | Q(course_code__contains=str(search_value).upper()) | Q(
+				course_code__contains=str(search_value).lower()) | Q(instructor__contains=search_value) | Q(
+				instructor__contains=str(search_value).lower()) | Q(instructor__contains=str(search_value).upper()) |
+			Q(faculty__contains=search_value) | Q(faculty__contains=str(search_value).lower()) | Q(
+				faculty__contains=str(search_value).upper()))
+
+		# Filtering dataset
+		dataFilter = dataList[startLimit:endLimit]
+
+		# Get the filter length
+		filterLength = dataList.count()
+	else:
+		# Querying dataset
+		dataList = CourseList.objects.all()
+
+		# Filtering dataset
+		dataFilter = dataList[startLimit:endLimit]
+
+		# Get the filter length
+		filterLength = totalLength
+
+	indexCount = startLimit + 1
+
+	# Processing the data for table
+	for key, item in enumerate(dataFilter):
+		date = item.exam_date
+		if str(date).strip() != "":
+			dateTimeStr = datetime.datetime.strptime(date, "%d-%m-%Y")
+			date = datetime.date(int(dateTimeStr.year), int(dateTimeStr.month), int(dateTimeStr.day)).strftime(
+				"%d %B %Y")
+		exam = date + "\n" + item.exam_time
+		row_array = [indexCount, item.course_code, item.section, item.total_seat, item.faculty, item.instructor,
+					 exam, item.sunday, item.monday, item.tuesday, item.wednesday, item.thursday, item.friday,
+					 item.saturday]
+		data_array.append(row_array)
+		indexCount += 1
+
+	# Preparing the response
+	response = {
+		"draw": request.GET['draw'],
+		"recordsTotal": totalLength,
+		"recordsFiltered": filterLength,
+		"data": data_array
+	}
+
+	# Returning json response
+	return JsonResponse(response)
+
+
 def courseSession(request):
 	if 'course_array' in request.POST:
 		request.session['course_array'] = request.POST['course_array']

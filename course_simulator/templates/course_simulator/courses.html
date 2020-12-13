@@ -23,6 +23,11 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- MDBootstrap Datatables  -->
     <link href="{% static 'css/addons/datatables.min.css' %}" rel="stylesheet">
+    {#    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>#}
+    {#    <link rel="stylesheet" type="text/css"#}
+    {#          href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css"/>#}
+    {#    <link rel="stylesheet" type="text/css"#}
+    {#          href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css"/>#}
 
     <style>
         #course_row:hover {
@@ -89,27 +94,27 @@
                         <th class="th-sm">Saturday</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    {% for course in courses %}
-                        <tr id="course_row"
-                            onclick="courseClicked('{{ course.course_code|linebreaksbr }}','{{ course.section }}','{{ course.instructor|linebreaksbr }}','{% parse_date course.exam_date %}','{{ course.exam_time }}','{{ course.sunday }}','{{ course.monday }}','{{ course.tuesday }}','{{ course.wednesday }}','{{ course.thursday }}','{{ course.friday }}','{{ course.saturday }}')">
-                            <td><b>{{ forloop.counter }}</b></td>
-                            <td><b>{{ course.course_code }}</b></td>
-                            <td><b>{{ course.section }}</b></td>
-                            <td><b>{{ course.total_seat }}</b></td>
-                            <td><b>{{ course.faculty }}</b></td>
-                            <td><b>{{ course.instructor }}</b></td>
-                            <td><b>{% parse_date course.exam_date %}<br>{{ course.exam_time }}</b></td>
-                            <td><b>{{ course.sunday }}</b></td>
-                            <td><b>{{ course.monday }}</b></td>
-                            <td><b>{{ course.tuesday }}</b></td>
-                            <td><b>{{ course.wednesday }}</b></td>
-                            <td><b>{{ course.thursday }}</b></td>
-                            <td><b>{{ course.friday }}</b></td>
-                            <td><b>{{ course.saturday }}</b></td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
+                    {#                    <tbody>#}
+                    {#                    {% for course in courses %}#}
+                    {#                        <tr id="course_row"#}
+                    {#                            onclick="courseClicked('{{ course.course_code|linebreaksbr }}','{{ course.section }}','{{ course.instructor|linebreaksbr }}','{% parse_date course.exam_date %}','{{ course.exam_time }}','{{ course.sunday }}','{{ course.monday }}','{{ course.tuesday }}','{{ course.wednesday }}','{{ course.thursday }}','{{ course.friday }}','{{ course.saturday }}')">#}
+                    {#                            <td><b>{{ forloop.counter }}</b></td>#}
+                    {#                            <td><b>{{ course.course_code }}</b></td>#}
+                    {#                            <td><b>{{ course.section }}</b></td>#}
+                    {#                            <td><b>{{ course.total_seat }}</b></td>#}
+                    {#                            <td><b>{{ course.faculty }}</b></td>#}
+                    {#                            <td><b>{{ course.instructor }}</b></td>#}
+                    {#                            <td><b>{% parse_date course.exam_date %}<br>{{ course.exam_time }}</b></td>#}
+                    {#                            <td><b>{{ course.sunday }}</b></td>#}
+                    {#                            <td><b>{{ course.monday }}</b></td>#}
+                    {#                            <td><b>{{ course.tuesday }}</b></td>#}
+                    {#                            <td><b>{{ course.wednesday }}</b></td>#}
+                    {#                            <td><b>{{ course.thursday }}</b></td>#}
+                    {#                            <td><b>{{ course.friday }}</b></td>#}
+                    {#                            <td><b>{{ course.saturday }}</b></td>#}
+                    {#                        </tr>#}
+                    {#                    {% endfor %}#}
+                    {#                    </tbody>#}
                 </table>
             </div>
         </div>
@@ -121,7 +126,7 @@
                 <small>Developed by <a href="https://www.facebook.com/rafathossain.xyz" target="_blank">Md. Rafat
                     Hossain</a></small>
                 <br>
-                <small>VP, Engineering & Product, Soft Tech Innovation Ltd.</small>
+                <small>Software Engineer, Soft Tech Innovation Ltd.</small>
             </div>
         </div>
     </div>
@@ -149,7 +154,7 @@
                         <th>Instructor</th>
                         <th>Exam Date & Time</th>
                         <th>Sunday</th>
-                        <th>Moday</th>
+                        <th>Monday</th>
                         <th>Tuesday</th>
                         <th>Wednesday</th>
                         <th>Thursday</th>
@@ -158,7 +163,6 @@
                     </tr>
                     </thead>
                     <tbody id="course_sim">
-
                     </tbody>
                 </table>
             </div>
@@ -186,10 +190,17 @@
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
 <!-- MDBootstrap Datatables  -->
-<script type="text/javascript" src="{% static 'js/addons/datatables.min.js' %}" defer></script>
-<script type="text/javascript"
-        src="https://github.com/niklasvh/html2canvas/releases/download/0.5.0-alpha1/html2canvas.js" defer></script>
+{#<script type="text/javascript" src="{% static 'js/addons/datatables.min.js' %}" defer></script>#}
+<script type="text/javascript" src="{% static 'js/html2canvas.js' %}" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" defer></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js" defer></script>
+<script type="text/javascript"
+        src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js" defer></script>
+<script type="text/javascript"
+        src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap4.min.js" defer></script>
+<script type="text/javascript"
+        src="https://cdn.datatables.net/rowreorder/1.2.7/js/dataTables.rowReorder.min.js" defer></script>
 <!-- Your custom scripts (optional) -->
 <script type="text/javascript">
     var course_array = [];
@@ -197,8 +208,71 @@
     $(document).ready(function () {
         //Pagination full Numbers
         $('#paginationFullNumbers').DataTable({
+            scrollCollapse: true,
+            processing: true,
+            serverSide: true,
+            paging: true,
+            columnDefs: [
+                {orderable: false, targets: '_all'}
+            ],
+            ajax: {
+                "url": '{% url 'courses.view' %}',
+                dataFilter: function (response) {
+                    // this to see what exactly is being sent back
+                    {#console.log(response);#}
+                    myFunction();
+                    addOnclick(response);
+                    return response;
+                },
+            },
             "pagingType": "full_numbers"
         });
+
+        function myFunction() {
+            setTimeout(function () {
+                $("#paginationFullNumbers tbody tr").attr("id", "course_row");
+            }, 300);
+        }
+
+        function nl2br(str) {
+            str = str.toString();
+            return str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+        }
+
+        function addOnclick(response) {
+            setTimeout(function () {
+                response = JSON.parse(response);
+                response = response["data"];
+                var table = document.getElementById("paginationFullNumbers");
+                var row;
+                for (var i = 0; i < response.length; i++) {
+                    var onclick = "";
+                    for (var j = 1; j < response[i].length; j++) {
+                        if (j !== 3 && j !== 4) {
+                            var date = "";
+                            var time = "";
+                            if (j === 6) {
+                                {#console.log();#}
+                                date = response[i][j].split("\n")[0];
+                                time = response[i][j].split("\n")[1];
+                                onclick = onclick + '\'' + date + '\',\'' + time + '\',';
+                            } else {
+                                if (j === response[i].length - 1) {
+                                    onclick = onclick + '\'' + nl2br(response[i][j]) + '\'';
+                                } else {
+                                    onclick = onclick + '\'' + nl2br(response[i][j]) + '\',';
+                                }
+                            }
+                        }
+                    }
+                    onclick = "courseClicked(" + onclick + ")";
+                    console.log(onclick);
+                    row = table.rows[i + 1];
+                    row.setAttribute('onclick', onclick);
+                    {#console.log(row);#}
+                }
+            }, 300);
+        }
     });
 
     $(document).ready(function () {
@@ -260,6 +334,9 @@
         course_array = temp_array;
         {#updateSession();#}
         $(elem).closest('tr').remove();
+        if (course_array.length === 0) {
+            clearAll();
+        }
     }
 
     function modalShow() {
@@ -295,6 +372,7 @@
         $("#exampleModalCenter").modal('hide');
         $("#downloadURL").attr("href", "");
         $("#downloadURL").hide();
+        course_array = [];
     }
 
     function downloaded() {
