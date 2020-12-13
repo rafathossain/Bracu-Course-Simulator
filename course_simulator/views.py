@@ -125,7 +125,7 @@ def updateDBBackground(data):
 	if settings.DEVELOPMENT:
 		browser_instance = webdriver.Chrome('./chromedriver_linux', options=chrome_options)
 	else:
-		browser_instance = webdriver.Chrome('/usr/bin/chromedriver', options=chrome_options)
+		browser_instance = webdriver.Chrome('/home/usissim/chromedriver', options=chrome_options)
 
 	time.sleep(1)
 
