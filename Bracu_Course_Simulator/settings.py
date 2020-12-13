@@ -92,11 +92,11 @@ else:
 		# Production configuration
 		'default': {
 			'ENGINE': 'django.db.backends.mysql',
-			'NAME': 'khaidai_today_core',
+			'NAME': 'usis_simulator',
 			'HOST': '127.0.0.1',
 			'PORT': '3306',
-			'USER': 'khaidai_today_core',
-			'PASSWORD': 'khaidai_today_core'
+			'USER': 'usis_simulator',
+			'PASSWORD': '*JLGy!tid90F90o5'
 		}
 	}
 
