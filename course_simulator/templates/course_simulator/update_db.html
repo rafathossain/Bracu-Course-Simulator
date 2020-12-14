@@ -21,6 +21,20 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- MDBootstrap Datatables  -->
     <link href="{% static 'css/addons/datatables.min.css' %}" rel="stylesheet">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JYRR6G5CPJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-JYRR6G5CPJ');
+    </script>
 </head>
 <body>
 
@@ -43,8 +57,9 @@
                 <h6 style="color: red; border: 2px solid red" class="p-2">
                     <b>Caution: </b>This credentials are used to updated the course database from usis. No
                     credentials are stored. It's 100% safe and secure to use usis email and password here to update
-                    database. To ensure transparency, I have made this project open source. <a href="https://github.com/rafathossain/Bracu-Course-Simulator"
-                                                                                               target="_blank">See
+                    database. To ensure transparency, I have made this project open source. <a
+                        href="https://github.com/rafathossain/Bracu-Course-Simulator"
+                        target="_blank">See
                     the source code here.</a>
                 </h6>
             </div>
